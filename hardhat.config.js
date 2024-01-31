@@ -1,6 +1,7 @@
 require('@nomiclabs/hardhat-ethers')
 
 require('./mock-deploy.js')
+require('@nomicfoundation/hardhat-verify')
 
 /**
  * @type import('hardhat/config').HardhatUserConfig
@@ -16,6 +17,11 @@ module.exports = {
           enabled: true,
           runs: 20000
       }
+    }
+  },
+  etherscan: {
+    apiKey: {
+      arbitrumOne: process.env.ARBISCAN_API_KEY
     }
   },
   networks: {
