@@ -1,7 +1,7 @@
 const dpack = require('@etherpacks/dpack')
 const hh = require('hardhat')
 const ethers = hh.ethers
-const { b32, fail, hear, revert, send, snapshot, wait, want } = require('minihat')
+const { wad, b32, fail, hear, revert, send, snapshot, wait, want } = require('minihat')
 
 const {padRight, check_gas, check_entry} = require('./utils/helpers')
 const {bounds} = require("./bounds");
@@ -162,8 +162,9 @@ describe('rootzone', ()=>{
 
         await wait(hh, delay_period)
         const commitment = getCommitment(b32('zone1'), zone1)
-        await send(rootzone.hark, commitment, {value: ethers.utils.parseEther('1')})
-        want(await rootzone.mark()).to.eql(commitment)
+        const mark = await rootzone.mark()
+        await fail('ErrReceipt()', rootzone.hark, commitment, {value: wad(1)})
+        want(await rootzone.mark()).to.eql(mark)
     })
 
     describe('gas', () => {

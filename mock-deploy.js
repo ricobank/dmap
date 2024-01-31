@@ -65,6 +65,11 @@ task('dmap-mock-deploy', async (args, hh)=> {
 
     const fullpack = await pb.build()
 
+    if (args.ipfs) {
+        const cid = await dpack.putIpfsJson(fullpack, pin=true)
+        console.log("cid:", cid)
+    }
+
     const show =(o)=> JSON.stringify(o, null, 2)
 
     fs.writeFileSync(packdir + `MockDmap.json`, show(dmap_type))

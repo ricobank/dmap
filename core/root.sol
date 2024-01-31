@@ -26,10 +26,10 @@ contract RootZone {
     function hark(bytes32 hash) external payable {
         if (block.timestamp < last + FREQ) revert ErrPending();
         if (msg.value != 1 ether) revert ErrPayment();
-        (bool ok, ) = block.coinbase.call{value:(10**18)}("");
-        if (!ok) revert ErrReceipt();
         last = block.timestamp;
         mark = hash;
+        (bool ok, ) = block.coinbase.call{value:(10**18)}("");
+        if (!ok) revert ErrReceipt();
         emit Hark(mark);
     }
 
