@@ -72,20 +72,6 @@ describe('rootzone', ()=>{
         await check_entry(dmap, rootzone.address, b32('zone1'), constants.HashZero, constants.HashZero)
     })
 
-    it('fee', async ()=>{
-        await wait(hh, delay_period)
-        const aliStartBalance = await ali.getBalance()
-        const commitment = getCommitment(b32('zone1'), zone1)
-        await fail('ErrPayment', rootzone.hark, commitment)
-        await fail('ErrPayment', rootzone.hark, commitment, { value: ethers.utils.parseEther('0.9') })
-        await fail('ErrPayment', rootzone.hark, commitment, { value: ethers.utils.parseEther('1.1') })
-        await send(rootzone.hark, commitment, { value: ethers.utils.parseEther('1') })
-        const aliEndBalance = await ali.getBalance()
-        want((aliStartBalance.sub(ethers.utils.parseEther('1.0'))).gt(aliEndBalance)).true
-        want((aliStartBalance.sub(ethers.utils.parseEther('1.5'))).lt(aliEndBalance)).true
-        await check_entry(dmap, rootzone.address, b32('zone1'), constants.HashZero, constants.HashZero)
-    })
-
     it('etch fail wrong hash', async ()=>{
         await wait(hh, delay_period)
         const commitment = getCommitment(b32('zone1'), zone1)
@@ -102,9 +88,6 @@ describe('rootzone', ()=>{
 
         // pending, payment, receipt
         await fail('ErrPending', rootzone.hark, commitment, { value: ethers.utils.parseEther('0.9') })
-        // payment, receipt
-        await wait(hh, delay_period)
-        await fail('ErrPayment', rootzone.hark, commitment, { value: ethers.utils.parseEther('0.9') })
 
         // receipt
         await hh.network.provider.send(

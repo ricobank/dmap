@@ -34,7 +34,7 @@ task('dmap-mock-deploy', async (args, hh)=> {
     const types = [ "bytes32", "bytes32", "address" ]
     const encoded = ethers.utils.defaultAbiCoder.encode(types, [ salt, name, zone ])
     const commitment = hh.ethers.utils.keccak256(encoded)
-    await send(tx_root.hark, commitment, { value: ethers.utils.parseEther('1') })
+    await send(tx_root.hark, commitment)
     await send(tx_root.etch, salt, name, zone)
 
     const pb = await dpack.builder(hh.network.name)
